@@ -10,11 +10,15 @@ namespace 番荔枝::特征编码
 	public:
 		std::string 文件名;
 		float 特征[2048];
+		double 特征平方和 = 0;
 
 		类别_样本(const std::string& 路径, const std::string& 文件名) : 文件名(文件名)
 		{
 			auto 档案 = fopen((路径 + 文件名).c_str(), "rb");
 			fread(特征, 4, 2048, 档案);
+			for (auto 子 = 0; 子 < 2048; 子++)
+				特征平方和 += 特征[子] * 特征[子];
+
 			fclose(档案);
 		}
 	};
