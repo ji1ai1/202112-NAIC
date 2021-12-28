@@ -26,6 +26,7 @@ namespace 番荔枝::特征编码
 			{
 				线程数组[子] = std::thread([查询样本向量, 画廊样本向量, 列向量](auto 线程序号, auto 预测向量数组)
 					{
+						auto 文件名相似度元组数组 = new std::tuple<std::string, double>[画廊样本向量.size()];
 						for (auto 子 = size_t(线程序号); 子 < 查询样本向量.size(); 子 += 线程数)
 						{
 							if (子 % 1024 == 0)
@@ -33,21 +34,21 @@ namespace 番荔枝::特征编码
 
 							auto& 样本 = *查询样本向量[子].get();
 
-							std::vector<std::tuple<std::string, double>> 文件名相似度元组向量;
 							for (auto 丑 = size_t(0); 丑 < 画廊样本向量.size(); 丑++)
 							{
 								auto& 画廊样本 = *画廊样本向量[丑].get();
 								auto 相似度 = 计算相似度(样本, 画廊样本, 列向量);
 
-								文件名相似度元组向量.push_back(std::tuple<std::string, double>(画廊样本.文件名, 相似度));
+								文件名相似度元组数组[丑] = std::tuple<std::string, double>(画廊样本.文件名, 相似度);
 							}
-							std::sort(文件名相似度元组向量.begin(), 文件名相似度元组向量.end(), [](const auto& 子元组, const auto& 丑元组) { return std::get<1>(子元组) > std::get<1>(丑元组); });
+							std::sort(文件名相似度元组数组, 文件名相似度元组数组 + 画廊样本向量.size(), [](const auto& 子元组, const auto& 丑元组) { return std::get<1>(子元组) > std::get<1>(丑元组); });
 
 							auto 预测向量指针 = std::make_shared<std::vector<std::string>>();
 							for (auto 丑 = 0; 丑 < 100; 丑++)
-								预测向量指针->push_back(std::get<0>(文件名相似度元组向量[丑]));
+								预测向量指针->push_back(std::get<0>(文件名相似度元组数组[丑]));
 							预测向量数组[线程序号].push_back(std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>(样本.文件名, 预测向量指针));
 						}
+						delete[] 文件名相似度元组数组;
 					}, 子, 预测向量数组);
 			}
 
