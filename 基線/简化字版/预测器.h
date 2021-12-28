@@ -34,7 +34,7 @@ namespace 番荔枝::特征编码
 							auto& 样本 = *查询样本向量[子].get();
 
 							std::vector<std::tuple<std::string, double>> 文件名相似度元组向量;
-							for (auto 丑 = 0; 丑 < 画廊样本向量.size(); 丑++)
+							for (auto 丑 = size_t(0); 丑 < 画廊样本向量.size(); 丑++)
 							{
 								auto& 画廊样本 = *画廊样本向量[丑].get();
 								auto 相似度 = 计算相似度(样本, 画廊样本, 列向量);
