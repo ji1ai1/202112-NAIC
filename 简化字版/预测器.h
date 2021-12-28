@@ -23,15 +23,11 @@ namespace 番荔枝::特征编码
 			std::vector<std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>> 预测向量数组[线程数];
 			for (auto 子 = 0; 子 < 线程数; 子++)
 			{
-				线程数组[子] = std::thread([查询样本向量, 画廊样本向量](auto 値, auto 预测向量数组)
+				线程数组[子] = std::thread([查询样本向量, 画廊样本向量](auto 线程序号, auto 预测向量数组)
 					{
-						for (auto 子 = size_t(0); 子 < 查询样本向量.size(); 子++)
+						for (auto 子 = size_t(线程序号); 子 < 查询样本向量.size(); 子 += 线程数)
 						{
-
-							if (子 % 线程数 != int(値))
-								continue;
-
-							if (子 % 733 == 0)
+							if (子 % 1024 == 0)
 								std::cout << 取得时间() << "\t已预测" << 子 << "个样本......" << std::endl;
 
 							auto& 样本 = *查询样本向量[子].get();
@@ -49,7 +45,7 @@ namespace 番荔枝::特征编码
 							auto 预测向量指针 = std::make_shared<std::vector<std::string>>();
 							for (auto 丑 = 0; 丑 < 100; 丑++)
 								预测向量指针->push_back(std::get<0>(文件名相似度元组向量[丑]));
-							预测向量数组[値].push_back(std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>(样本.文件名, 预测向量指针));
+							预测向量数组[线程序号].push_back(std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>(样本.文件名, 预测向量指针));
 						}
 					}, 子, 预测向量数组);
 			}
