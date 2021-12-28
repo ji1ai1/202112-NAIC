@@ -30,9 +30,6 @@ namespace 番荔枝::特征編碼
 						auto 檔案名相似度元組陣列 = new std::tuple<std::string, double>[畫廊樣本向量.size()];
 						for (auto 子 = size_t(執行緒序号); 子 < 查詢樣本向量.size(); 子 += 執行緒數)
 						{
-							if (子 > 2048)
-								break;
-
 							if (子 % 1024 == 0)
 								std::cout << 取得時間() << "\t已預測" << 子 << "箇樣本......" << std::endl;
 
