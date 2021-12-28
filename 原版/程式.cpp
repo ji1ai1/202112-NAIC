@@ -71,7 +71,7 @@ int main(int 引數數量, char* 引數陣列[])
 
 	std::vector<std::shared_ptr<類別_樣本>> 測試查詢樣本向量;
 	std::vector<std::shared_ptr<類別_樣本>> 測試畫廊樣本向量;
-	讀測試資料(測試查詢樣本向量, 測試畫廊樣本向量, "test_A/query_feature_A\\", "test_A/gallery_feature_A\\");
+	讀測試資料(測試查詢樣本向量, 測試畫廊樣本向量, "test_A/query_feature_A/", "test_A/gallery_feature_A/");
 	std::cout << 取得時間() << "\t已讀取" << 測試查詢樣本向量.size() << "箇畫廊樣本" << ", " << 測試畫廊樣本向量.size()  << "箇畫廊樣本......" << std::endl;
 
 	std::vector<std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>> 預測向量;
