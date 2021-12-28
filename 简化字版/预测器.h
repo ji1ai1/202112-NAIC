@@ -36,7 +36,7 @@ namespace 番荔枝::特征编码
 							for (auto 丑 = 0; 丑 < 画廊样本向量.size(); 丑++)
 							{
 								auto& 画廊样本 = *画廊样本向量[丑].get();
-								auto 相似度 = 计算相似度(样本.特征, 画廊样本.特征);
+								auto 相似度 = 计算相似度(样本, 画廊样本);
 
 								文件名相似度元组向量.push_back(std::tuple<std::string, double>(画廊样本.文件名, 相似度));
 							}
@@ -59,27 +59,21 @@ namespace 番荔枝::特征编码
 		}
 
 	private:
-		static double 计算相似度(const float 子位数组[], const float 丑位数组[])
+		static double 计算相似度(const 类别_样本& 子样本, const 类别_样本& 丑样本)
 		{
 			auto 相似度分子 = 0.0;
-			auto 子相似度分母 = 0.0;
-			auto 丑相似度分母 = 0.0;
 			for (auto 子 = 0; 子 < 2048; 子++)
-			{
-				相似度分子 += 子位数组[子] * 丑位数组[子];
-				子相似度分母 += 子位数组[子] * 子位数组[子];
-				丑相似度分母 += 丑位数组[子] * 丑位数组[子];
-			}
+				相似度分子 += 子样本.特征[子] * 丑样本.特征[子];
 
-			return 相似度分子 / sqrt(子相似度分母 * 丑相似度分母);
+			return 相似度分子 / sqrt(子样本.特征平方和 * 丑样本.特征平方和);
 		}
 
-		/*static double 计算相似度(const float 子位数组[], const float 丑位数组[])
+		/*static double 计算相似度(const 类别_样本& 子样本, const 类别_样本& 丑样本)
 		{
 			auto 距离 = 0.0;
 			for (auto 子 = 0; 子 < 2048; 子++)
 			{
-				auto 差 = 子位数组[子] - 丑位数组[子];
+				auto 差 = 子样本.特征[子] - 丑样本.特征[子];
 				距离 += 差 * 差;
 			}
 
