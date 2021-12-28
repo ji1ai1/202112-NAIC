@@ -27,28 +27,32 @@ namespace 番荔枝::特征編碼
 			{
 				執行緒陣列[子] = std::thread([查詢樣本向量, 畫廊樣本向量, 欄向量](auto 執行緒序号, auto 預測向量陣列)
 					{
+						auto 檔案名相似度元組陣列 = new std::tuple<std::string, double>[畫廊樣本向量.size()];
 						for (auto 子 = size_t(執行緒序号); 子 < 查詢樣本向量.size(); 子 += 執行緒數)
 						{
+							if (子 > 2048)
+								break;
+
 							if (子 % 1024 == 0)
 								std::cout << 取得時間() << "\t已預測" << 子 << "箇樣本......" << std::endl;
 
 							auto& 樣本 = *查詢樣本向量[子].get();
 
-							std::vector<std::tuple<std::string, double>> 檔案名相似度元組向量(畫廊樣本向量.size());
 							for (auto 丑 = size_t(0); 丑 < 畫廊樣本向量.size(); 丑++)
 							{
 								auto& 畫廊樣本 = *畫廊樣本向量[丑].get();
 								auto 相似度 = 計算相似度(樣本, 畫廊樣本, 欄向量);
 
-								檔案名相似度元組向量.push_back(std::tuple<std::string, double>(畫廊樣本.檔案名, 相似度));
+								檔案名相似度元組陣列[丑] = std::tuple<std::string, double>(畫廊樣本.檔案名, 相似度);
 							}
-							std::sort(檔案名相似度元組向量.begin(), 檔案名相似度元組向量.end(), [](const auto& 子元組, const auto& 丑元組) { return std::get<1>(子元組) > std::get<1>(丑元組); });
+							std::sort(檔案名相似度元組陣列, 檔案名相似度元組陣列 + 畫廊樣本向量.size(), [](const auto& 子元組, const auto& 丑元組) { return std::get<1>(子元組) > std::get<1>(丑元組); });
 
 							auto 預測向量指針 = std::make_shared<std::vector<std::string>>();
 							for (auto 丑 = 0; 丑 < 100; 丑++)
-								預測向量指針->push_back(std::get<0>(檔案名相似度元組向量[丑]));
+								預測向量指針->push_back(std::get<0>(檔案名相似度元組陣列[丑]));
 							預測向量陣列[執行緒序号].push_back(std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>(樣本.檔案名, 預測向量指針));
 						}
+						delete[] 檔案名相似度元組陣列;
 					}, 子, 預測向量陣列);
 			}
 
