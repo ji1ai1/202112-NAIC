@@ -80,7 +80,7 @@ int main(int 参数数量, char* 参数数组[])
 		特征最小值数组[子] = INFINITY;
 		特征最大值数组[子] = -INFINITY;
 	}
-	for (auto 样本 : 测试查询样本向量)
+	for (const auto& 样本 : 测试查询样本向量)
 	{
 		for (auto 子 = 0; 子 < 2048; 子++)
 		{
@@ -90,7 +90,7 @@ int main(int 参数数量, char* 参数数组[])
 				特征最大值数组[子] = 样本->特征[子];
 		}
 	}
-	for (auto 样本 : 测试画廊样本向量)
+	for (const auto& 样本 : 测试画廊样本向量)
 	{
 		for (auto 子 = 0; 子 < 2048; 子++)
 		{
