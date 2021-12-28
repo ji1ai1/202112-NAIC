@@ -24,9 +24,9 @@ namespace 番荔枝::特征編碼
 			std::vector<std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>> 預測向量陣列[執行緒數];
 			for (auto 子 = 0; 子 < 執行緒數; 子++)
 			{
-				執行緒陣列[子] = std::thread([查詢樣本向量, 畫廊樣本向量](auto 値, auto 預測向量陣列)
+				執行緒陣列[子] = std::thread([查詢樣本向量, 畫廊樣本向量](auto 執行緒序号, auto 預測向量陣列)
 				{
-					for (auto 子 = size_t(0); 子 < 查詢樣本向量.size(); 子++)
+					for (auto 子 = size_t(執行緒序号); 子 < 查詢樣本向量.size(); 子 += 執行緒數)
 					{
 
 						if (子 % 執行緒數 != int(値))
@@ -50,7 +50,7 @@ namespace 番荔枝::特征編碼
 						auto 預測向量指針 = std::make_shared<std::vector<std::string>>();
 						for (auto 丑 = 0; 丑 < 100; 丑++)
 							預測向量指針->push_back(std::get<0>(檔案名相似度元組向量[丑]));
-						預測向量陣列[値].push_back(std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>(樣本.檔案名, 預測向量指針));
+						預測向量陣列[執行緒序号].push_back(std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>(樣本.檔案名, 預測向量指針));
 					}
 				}, 子, 預測向量陣列);
 			}
