@@ -1,16 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <condition_variable>
-#include <cstdio>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <map>
-#include <mutex>
 #include <string>
-#include <thread>
 #include <unordered_map>
-#include <unordered_set>
 #include <vector>
 
 #include "基础.h"
@@ -76,12 +70,12 @@ int main(int 参数数量, char* 参数数组[])
 
 	std::vector<std::shared_ptr<类别_样本>> 测试查询样本向量;
 	std::vector<std::shared_ptr<类别_样本>> 测试画廊样本向量;
-	读测试数据(测试查询样本向量, 测试画廊样本向量, "C:/2021.12 特征编码/test_A/query_feature_A\\", "C:/2021.12 特征编码/test_A/gallery_feature_A\\");
+	读测试数据(测试查询样本向量, 测试画廊样本向量, "test_A/query_feature_A/", "test_A/gallery_feature_A/");
 	std::cout << 取得时间() << "\t已读取" << 测试查询样本向量.size() << "个画廊样本" << ", " << 测试画廊样本向量.size() << "个画廊样本......" << std::endl;
 
 	std::vector<std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>> 预测向量;
 	类别_预测器::预测(预测向量, 测试查询样本向量, 测试画廊样本向量);
-	写预测至JSON("C:/2021.12 特征编码/20211228M.json", 预测向量);
+	写预测至JSON("result.json", 预测向量);
 
 	return 0;
 }
