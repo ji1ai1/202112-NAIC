@@ -85,7 +85,7 @@ int main(int 引數數量, char* 引數陣列[])
 		特征最小値陣列[子] = INFINITY;
 		特征最大値陣列[子] = -INFINITY;
 	}
-	for(auto 樣本 : 測試查詢樣本向量)
+	for(const auto& 樣本 : 測試查詢樣本向量)
 	{
 		for (auto 子 = 0; 子 < 2048; 子++)
 		{
@@ -95,7 +95,7 @@ int main(int 引數數量, char* 引數陣列[])
 				特征最大値陣列[子] = 樣本->特征[子];
 		}
 	}
-	for (auto 樣本 : 測試畫廊樣本向量)
+	for (const auto& 樣本 : 測試畫廊樣本向量)
 	{
 		for (auto 子 = 0; 子 < 2048; 子++)
 		{
