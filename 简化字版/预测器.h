@@ -23,7 +23,7 @@ namespace 番荔枝::特征编码
 			std::vector<std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>> 预测向量数组[线程数];
 			for (auto 子 = 0; 子 < 线程数; 子++)
 			{
-				线程数组[子] = std::thread([查询样本向量, 画廊样本向量](auto 値, auto* 预测向量数组)
+				线程数组[子] = std::thread([查询样本向量, 画廊样本向量](auto 値, auto 预测向量数组)
 					{
 						for (auto 子 = size_t(0); 子 < 查询样本向量.size(); 子++)
 						{
