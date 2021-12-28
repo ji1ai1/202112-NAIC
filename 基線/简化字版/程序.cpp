@@ -73,8 +73,8 @@ int main(int 参数数量, char* 参数数组[])
 	读测试数据(测试查询样本向量, 测试画廊样本向量, "test_A/query_feature_A/", "test_A/gallery_feature_A/");
 	std::cout << 取得时间() << "\t已读取" << 测试查询样本向量.size() << "个画廊样本" << ", " << 测试画廊样本向量.size() << "个画廊样本......" << std::endl;
 
-	double 特征最小值数组[2048];
-	double 特征最大值数组[2048];
+	auto 特征最小值数组 = new double[2048];
+	auto 特征最大值数组 = new double[2048];
 	for (auto 子 = 0; 子 < 2048; 子++)
 	{
 		特征最小值数组[子] = INFINITY;
@@ -106,6 +106,8 @@ int main(int 参数数量, char* 参数数组[])
 		if (特征最小值数组[子] != 特征最大值数组[子])
 			列向量.push_back(子);
 	}
+	delete[] 特征最小值数组;
+	delete[] 特征最大值数组;
 
 	std::vector<std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>> 预测向量;
 	类别_预测器::预测(预测向量, 测试查询样本向量, 测试画廊样本向量, 列向量);
