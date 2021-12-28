@@ -28,10 +28,6 @@ namespace 番荔枝::特征編碼
 				{
 					for (auto 子 = size_t(執行緒序号); 子 < 查詢樣本向量.size(); 子 += 執行緒數)
 					{
-
-						if (子 % 執行緒數 != int(値))
-							continue;
-
 						if (子 % 1024 == 0)
 							std::cout << 取得時間() << "\t已預測" << 子 << "箇樣本......" << std::endl;
 
