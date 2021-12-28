@@ -24,7 +24,7 @@ namespace 番荔枝::特征編碼
 			std::vector<std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>> 預測向量陣列[執行緒數];
 			for (auto 子 = 0; 子 < 執行緒數; 子++)
 			{
-				執行緒陣列[子] = std::thread([查詢樣本向量, 畫廊樣本向量](auto 値, auto* 預測向量陣列)
+				執行緒陣列[子] = std::thread([查詢樣本向量, 畫廊樣本向量](auto 値, auto 預測向量陣列)
 				{
 					for (auto 子 = size_t(0); 子 < 查詢樣本向量.size(); 子++)
 					{
