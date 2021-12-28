@@ -78,8 +78,8 @@ int main(int 引數數量, char* 引數陣列[])
 	讀測試資料(測試查詢樣本向量, 測試畫廊樣本向量, "C:/2021.12 特征編碼/test_A/query_feature_A/", "C:/2021.12 特征編碼/test_A/gallery_feature_A/");
 	std::cout << 取得時間() << "\t已讀取" << 測試查詢樣本向量.size() << "箇畫廊樣本" << ", " << 測試畫廊樣本向量.size()  << "箇畫廊樣本......" << std::endl;
 
-	double 特征最小値陣列[2048];
-	double 特征最大値陣列[2048];
+	auto 特征最小値陣列 = new double[2048];
+	auto 特征最大値陣列 = new double[2048];
 	for (auto 子 = 0; 子 < 2048; 子++)
 	{
 		特征最小値陣列[子] = INFINITY;
@@ -111,6 +111,8 @@ int main(int 引數數量, char* 引數陣列[])
 		if (特征最小値陣列[子] != 特征最大値陣列[子])
 			欄向量.push_back(子);
 	}
+	delete[] 特征最大値陣列;
+	delete[] 特征最小値陣列;
 
 	std::vector<std::tuple<std::string, std::shared_ptr<std::vector<std::string>>>> 預測向量;
 	類別_預測器::預測(預測向量, 測試查詢樣本向量, 測試畫廊樣本向量, 欄向量);
